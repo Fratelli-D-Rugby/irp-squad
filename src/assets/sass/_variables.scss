@@ -1,0 +1,5 @@
+$blue: #17a4eb;
+
+@mixin mobile {
+  @media (max-width: 600px) { @content }
+}
