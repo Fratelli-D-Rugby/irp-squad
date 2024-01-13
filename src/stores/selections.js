@@ -33,6 +33,19 @@ const parseFanSelection = (data) => {
   Object.keys(_selection).forEach((k) => {
     _finalSelection[k] = _selection[k].sort((a, b) => b.score - a.score).slice(0, 3)
   })
+  Object.keys(_finalSelection).forEach((k) => {
+    const double = Object.keys(_finalSelection).filter((_k) => {
+      return ((_finalSelection[k][0].id === _finalSelection[_k][0].id) && (k !== _k))
+    })
+    if (double.length > 0) {
+      double.forEach((_d) => {
+        const second = (_finalSelection[k][0].score > _finalSelection[_d][0].score) ? _d : k
+        const temp = _finalSelection[second][0]
+        _finalSelection[second][0] = _finalSelection[second][1]
+        _finalSelection[second][1] = temp
+      })
+    }
+  })
   return _finalSelection
 }
 
@@ -164,9 +177,11 @@ export const useSelections = defineStore(`${env.VITE_NAMESPACE}-selection-store`
           .select()
           .eq('user_id', user)
         if (checkShareError) throw(checkShareError)
-        this._selectionTitle = _sharedData[0].title
-        this._selectionId = _sharedData[0].id
-        this._selection = parseRemoteSelection(data)
+        if (_sharedData.length > 0) {
+          this._selectionTitle = _sharedData[0].title
+          this._selectionId = _sharedData[0].id
+          this._selection = parseRemoteSelection(data)
+        }
       } catch(error) {
         setToast('Error getting selection, please retry' + error, 'success')
       }

@@ -66,16 +66,30 @@
   </popup>
   <popup :open="loginVisible" @toggle="loginVisible = !loginVisible">
     <div class="title">{{ $t('selection.login') }}</div>
-    <div class="actions">
-      <div class="button" @click="login('google')">{{ $t('selection.login_with_google') }}</div>
+    <div v-if="!_logginInViaEMail" class="actions">
+      <!-- <div class="button" @click="login('google')">{{ $t('selection.login_with_google') }}</div>-->
       <div class="button" @click="login('twitter')">{{ $t('selection.login_with_twitter') }}</div>
+      <div class="button" @click="_logginInViaEMail = true">{{ $t('selection.login_with_email') }}</div>
+    </div>
+    <div v-if="_logginInViaEMail & !loggingViaEmailSuccess" class="actions">
+      <input class="title-input" type="text" v-model="_form._loggingEmail" :placeholder="$t('selection.insert_email')" />
+      <div class="button"
+        @click="_loginViaEmail()"
+        :class=" { 'disabled': $v._loggingEmail.required.$invalid || $v._loggingEmail.email.$invalid }">
+          {{ $t('selection.login_with_email') }}
+        </div>
+      <div class="button" @click="_logginInViaEMail = false">{{ $t('selection.cancel') }}</div>
+    </div>
+    <div v-if="_logginInViaEMail & loggingViaEmailSuccess" class="actions">
+      <p>{{ $t('selection.check_your_email') }}</p>
     </div>
   </popup>
 </template>
 
 <script setup>
-
 import { ref, computed, watch } from 'vue'
+import { useVuelidate } from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 import SvgIcon from "vue3-icon"
 import { storeToRefs } from 'pinia'
 import Popup from '@/components/Popup.vue'
@@ -91,6 +105,16 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
+const _logginInViaEMail = ref(false)
+const loggingViaEmailSuccess = ref(false)
+const _form = ref({
+  _loggingEmail: ''
+})
+const rules = {
+  _loggingEmail: { required, email }
+}
+const $v = useVuelidate(rules, _form)
+
 const currentRoute = computed(() => route.name)
 const fanSquad = computed(() => currentRoute.value === 'fan-squad')
 const sharedSquad = computed(() => currentRoute.value === 'shared-squad')
@@ -98,8 +122,17 @@ const sharedSquad = computed(() => currentRoute.value === 'shared-squad')
 const {
   login,
   logout,
-  setPendingSave
+  setPendingSave,
+  loginViaEmail
 } = userStore
+
+const _loginViaEmail = async () => {
+  const res = await loginViaEmail(_form.value._loggingEmail)
+  if (res) {
+    _form.value._loggingEmail = ''
+    loggingViaEmailSuccess.value = true
+  }
+}
 
 import { useSelections } from '@/stores/selections.js'
 const selectionsStore = useSelections()
@@ -128,7 +161,7 @@ const shareTitleVisible = ref(false)
 const sharingTitle = ref('')
 
 const _copy = () => {
-  copy(`https://fdr.ze.lc/share/${shared.value.id}`)
+  copy(`https://6nations.italianrugbypodcast.com/#/share/${shared.value.id}`)
   mobileNavVisible.value = false
   setToast('Link copied!', 'success')
 }

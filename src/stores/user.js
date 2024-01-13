@@ -62,6 +62,28 @@ export const useUser = defineStore(`${env.VITE_NAMESPACE}-user-store`, {
         this.fetching = false;
       }
     },
+    async loginViaEmail(email) {
+      const {
+        setToast,
+      } = useToasts()
+      this.fetching = true;
+      try {
+        const { error } = await supabase.auth.signInWithOtp({
+          email: email,
+          options: {
+            shouldCreateUser: true,
+            emailRedirectTo: `${env.VITE_NAMESPACE}`,
+          },
+        })        
+        if (error) throw(error)
+        return true
+      } catch(error) {
+        setToast('Error Logging in!', 'error')
+        this.resetState()
+      } finally {
+        this.fetching = false;
+      }
+    },
     async logout() {
       const {
         setToast,

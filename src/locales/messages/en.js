@@ -16,7 +16,11 @@ export default {
     view_selection: "View Fans selection",
     logout: "Logout",
     save_and_share: "Save and Share",
-    fans: "Fans selection"
+    fans: "Fans selection",
+    login_with_email: "Login with Email",
+    cancel: "Cancel",
+    insert_email: "Insert Email...",
+    check_your_email: "Check your email and follow the link to log in."
   },
   footer: {
     listen: "Listen Fratelli D'Rugby Podcast"
