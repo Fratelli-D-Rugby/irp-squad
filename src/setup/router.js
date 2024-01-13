@@ -1,8 +1,8 @@
-import { createWebHashHistory } from "vue-router"
+import { createWebHistory } from "vue-router"
 
 import createRouter from '@/router/routes.js'
 
-const router = createRouter(createWebHashHistory())
+const router = createRouter(createWebHistory())
 
 export default function setupRouter(app) {
   app.use(router)
