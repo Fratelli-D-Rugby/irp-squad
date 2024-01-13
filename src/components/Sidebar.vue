@@ -51,8 +51,8 @@
           </a>
         </div>
         <br />
-        <router-link class="privacy" :to="{name: 'privacy-policy'}">Privacy</router-link> - 
-        <router-link class="privacy" :to="{name: 'tos'}">ToS</router-link>
+        <p class="privacy"><router-link class="privacy" :to="{name: 'privacy-policy'}">Privacy</router-link> - 
+        <router-link class="privacy" :to="{name: 'tos'}">ToS</router-link></p>
       </div>
     </div>
   </div>

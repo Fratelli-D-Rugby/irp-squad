@@ -198,7 +198,7 @@ const selectable = computed(() => {
   font-size: 1.8vw;
   text-align: center;
   position: absolute;
-  top: 0.25vw;
+  top: 0.5vw;
   left: 1.5vw;
   @include mobile {
     font-size: 18px;
