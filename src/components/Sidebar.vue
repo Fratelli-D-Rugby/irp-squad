@@ -161,7 +161,7 @@ const shareTitleVisible = ref(false)
 const sharingTitle = ref('')
 
 const _copy = () => {
-  copy(`https://6nations.italianrugbypodcast.com/#/share/${shared.value.id}`)
+  copy(`https://6nations.italianrugbypodcast.com/share/${shared.value.id}`)
   mobileNavVisible.value = false
   setToast('Link copied!', 'success')
 }

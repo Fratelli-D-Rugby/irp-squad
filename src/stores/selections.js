@@ -39,7 +39,7 @@ const parseFanSelection = (data) => {
     })
     if (double.length > 0) {
       double.forEach((_d) => {
-        const second = (_finalSelection[k][0].score > _finalSelection[_d][0].score) ? _d : k
+        const second = (_finalSelection[k][0].score >= _finalSelection[_d][0].score) ? _d : k
         const temp = _finalSelection[second][0]
         _finalSelection[second][0] = _finalSelection[second][1]
         _finalSelection[second][1] = temp
