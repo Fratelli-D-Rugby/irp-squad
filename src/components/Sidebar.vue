@@ -67,7 +67,7 @@
   <popup :open="loginVisible" @toggle="loginVisible = !loginVisible">
     <div class="title">{{ $t('selection.login') }}</div>
     <div v-if="!_logginInViaEMail" class="actions">
-      <!-- <div class="button" @click="login('google')">{{ $t('selection.login_with_google') }}</div>-->
+      <div class="button" @click="login('google')">{{ $t('selection.login_with_google') }}</div>
       <div class="button" @click="login('twitter')">{{ $t('selection.login_with_twitter') }}</div>
       <div class="button" @click="_logginInViaEMail = true">{{ $t('selection.login_with_email') }}</div>
     </div>
